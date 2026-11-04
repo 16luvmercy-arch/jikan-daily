@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>JikanDaily – Interactive Prototype</title>
+<link href="https://fonts.googleapis.com/css2?family=Prompt:wght@200;300;400&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0b0b0d;--card:#17171b;--line:#26262c;--tx:#f2f2f4;--mute:#8d8d96;--acc:#f5c76b;--red:#ff7a6b;--grn:#8fd6a8;color-scheme:dark;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}
+body{margin:0;background:#050506;color:var(--tx);font-family:'Prompt',system-ui,sans-serif;font-weight:300;display:flex;flex-direction:column;align-items:center;padding:14px}
+.top{text-align:center;color:var(--mute);font-size:12px;margin-bottom:10px}
+.seg button{font:inherit;font-size:12px;color:var(--mute);background:var(--card);border:1px solid var(--line);border-radius:999px;padding:5px 14px;margin:0 3px;cursor:pointer}
+.seg button.on{color:#111;background:var(--acc);border-color:var(--acc)}
+.ph{width:min(100%,370px);height:700px;background:var(--bg);border:1px solid var(--line);border-radius:38px;padding:48px 18px 34px;position:relative;overflow:hidden;display:flex;flex-direction:column;gap:10px}
+body[data-p=android] .ph{border-radius:28px}
+body[data-p=android] .btn,body[data-p=android] .card{border-radius:14px}
+.sb{position:absolute;top:0;left:0;right:0;height:40px;display:flex;justify-content:space-between;align-items:center;padding:6px 24px 0;font-size:11px}
+.cam{position:absolute;left:50%;top:10px;transform:translateX(-50%);background:#000;border:1px solid var(--line)}
+body[data-p=ios] .cam{width:76px;height:22px;border-radius:12px}
+body[data-p=android] .cam{width:10px;height:10px;border-radius:50%;top:14px}
+.gb{position:absolute;left:0;right:0;bottom:0;height:28px;display:flex;justify-content:center;align-items:center;color:var(--mute);font-size:12px}
+body[data-p=ios] .gb:before{content:"";width:100px;height:4px;border-radius:9px;background:var(--tx);opacity:.8}
+body[data-p=android] .gb:before{content:"\25C1    \25CB    \25A1";letter-spacing:.15em}
+.t{font-size:12px;color:var(--mute)}
+.big{font-size:27px;font-weight:200;line-height:1.25}
+.card{background:var(--card);border-radius:20px;padding:12px 14px;font-size:14px}
+.card small{display:block;color:var(--mute);font-size:11px}
+.flex{display:flex;justify-content:space-between;align-items:center;gap:8px}
+.btn{background:var(--acc);color:#111;border:0;border-radius:999px;padding:12px;font:inherit;font-size:14px;font-weight:400;width:100%;cursor:pointer}
+.btn.o{background:none;color:var(--tx);border:1px solid var(--line)}
+.btn.r{background:none;color:var(--red);border:1px solid var(--red)}
+.mini{background:var(--line);color:var(--tx);border:0;border-radius:50%;width:28px;height:28px;font:inherit;cursor:pointer}
+.chk{width:22px;height:22px;border-radius:50%;border:1px solid var(--mute);background:none;color:#111;cursor:pointer;padding:0;flex:none}
+.chk.on{background:var(--grn);border-color:var(--grn)}
+.done{opacity:.45;text-decoration:line-through}
+.line{height:2px;background:var(--acc);margin:10px 0 4px;position:relative}
+.line:after{content:"ปิดร้าน";position:absolute;right:0;top:-17px;font-size:10px;color:var(--acc)}
+.over{opacity:.55}
+.tag{font-size:10px;color:var(--red)}
+.bar{height:6px;border-radius:9px;background:var(--line);overflow:hidden}.bar i{display:block;height:100%;background:var(--acc)}
+.list{display:flex;flex-direction:column;gap:8px;overflow:auto;flex:1}
+.nav{margin-top:auto;display:flex;justify-content:space-around;font-size:12px;color:var(--mute);border-top:1px solid var(--line);padding-top:10px}
+.nav button{background:none;border:0;color:inherit;font:inherit;cursor:pointer}.nav .a{color:var(--acc)}
+.sheet{position:absolute;left:0;right:0;bottom:0;background:#121216;border-top:1px solid var(--line);border-radius:28px 28px 0 0;padding:18px 18px 40px;display:flex;flex-direction:column;gap:10px;box-shadow:0 -20px 40px rgba(0,0,0,.6)}
+.chips{display:flex;gap:6px}.chips button{flex:1;background:var(--card);color:var(--tx);border:1px solid var(--line);border-radius:12px;padding:8px 0;font:inherit;font-size:12px;cursor:pointer}.chips .on{border-color:var(--acc);color:var(--acc)}
+input{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:11px;color:var(--tx);font:inherit;font-size:14px;width:100%}
+.moon{width:78px;height:78px;border-radius:50%;background:radial-gradient(circle at 35% 35%,#fff3cf,var(--acc));margin:10px auto;box-shadow:0 0 50px rgba(245,199,107,.35)}
+.ctr{text-align:center}.dots{display:flex;gap:6px}.dots i{flex:1;height:30px;border-radius:10px;background:var(--line)}.dots .g{background:var(--grn)}.dots .r{background:var(--red);opacity:.7}
+.note{font-size:11px;color:var(--mute);margin-top:12px;text-align:center;max-width:370px}
+</style>
+</head>
+<body data-p="ios">
+<div class="top">JikanDaily · ต้นแบบที่กดใช้ได้ (ข้อมูลไม่ถูกบันทึก) · เวลาในแอปจำลองไว้ที่ 15:00<br>
+<span class="seg" style="display:inline-block;margin-top:8px"><button class="on" data-p="ios">iOS</button><button data-p="android">Android</button></span></div>
+<div class="ph" id="app"></div>
+<div class="note">ลองกด "+ เพิ่มงาน" แล้วใส่งานยาว ๆ เพื่อดูการเตือนงานล้นร้าน</div>
+<script>
+var S;
+function init(){S={close:21,now:15,tasks:[{id:1,n:'ตรวจงานนักศึกษา',m:90},{id:2,n:'ประชุมภาค (Zoom)',m:60}],tmr:[],debt:2,streak:5,tab:'today',sheet:null,pend:null,nid:3,dur:60,closed:false,week:['g','r','g','r','g']};}
+init();
+function esc(s){var d=document.createElement('div');d.textContent=s;return d.innerHTML}
+function rem(){return (S.close-S.now)*60}
+function live(){return S.tasks.filter(function(t){return !t.done&&!t.borrowed})}
+function need(){return live().reduce(function(a,t){return a+t.m},0)}
+function over(){return Math.max(0,need()-rem())}
+function fmt(m){var h=Math.floor(m/60),r=Math.round(m%60);return ((h?h+' ชม. ':'')+(r?r+' น.':'')).trim()||'0 น.'}
+function hh(x){var h=Math.floor(x);return (h<10?'0':'')+h+':'+(x%1?'30':'00')}
+function go(t){S.tab=t;S.sheet=null;draw()}
+function setClose(d){S.close=Math.min(23,Math.max(S.now+1,S.close+d));draw()}
+function tg(id){S.tasks.forEach(function(t){if(t.id==id)t.done=!t.done});draw()}
+function openAdd(){S.sheet='add';draw()}
+function dur(m){S.dur=m;draw()}
+function add(){var v=document.getElementById('nm').value.trim()||'งานใหม่';var id=S.nid++;S.tasks.push({id:id,n:v,m:S.dur});S.pend=id;S.sheet=over()>0?'warn':null;draw()}
+function task(id){return S.tasks.filter(function(t){return t.id==id})[0]}
+function defer(id){var t=task(id);S.tasks=S.tasks.filter(function(x){return x.id!=id});S.tmr.push(t);S.sheet=null;draw()}
+function split(id){var t=task(id),keep=Math.max(30,Math.round(t.m/2/15)*15);S.tmr.push({n:t.n+' (ส่วนที่ 2)',m:Math.max(15,t.m-keep)});t.m=keep;S.sheet=over()>0?'warn':null;draw()}
+function borrow(id){var o=over();task(id).borrowed=true;S.debt+=o/60;S.sheet=null;draw()}
+function doClose(){var ok=!S.tasks.some(function(t){return t.borrowed});S.closed=true;S.ok=ok;if(ok){S.streak++;S.debt=Math.max(0,S.debt-.5);S.week.push('g')}else{S.streak=0;S.week.push('r')}draw()}
+function pill(){return '<div class="sb"><span>9:41</span><i class="cam"></i><span>5G \u25AE</span></div>'}
+function nav(){return '<div class="nav"><button class="'+(S.tab=='today'?'a':'')+'" onclick="go(\'today\')">วันนี้</button><button class="'+(S.tab=='debt'?'a':'')+'" onclick="go(\'debt\')">หนี้นอน</button></div>'}
+function today(){
+ var h='<div class="flex"><span class="t">พุธ 4 พ.ย.</span><span class="t">🔥 '+S.streak+' วัน</span></div>';
+ h+='<div class="big">เหลือ '+fmt(rem())+'<br>ก่อนปิดร้าน</div>';
+ h+='<div class="card flex"><span>เวลาปิดร้าน</span><span><button class="mini" onclick="setClose(-.5)">\u2212</button> '+hh(S.close)+' <button class="mini" onclick="setClose(.5)">+</button></span></div>';
+ h+='<div class="bar"><i style="width:'+Math.min(100,need()/rem()*100)+'%"></i></div><div class="t">งานที่เหลือใช้เวลา '+fmt(need())+(over()>0?' (เกิน '+fmt(over())+')':'')+'</div>';
+ var acc=0,lined=false,rows='';
+ S.tasks.forEach(function(t){
+  var isOver=false;
+  if(!t.done){ if(t.borrowed){isOver=true}else{acc+=t.m;isOver=acc>rem()} }
+  if((isOver||t.borrowed)&&!lined){rows+='<div class="line"></div>';lined=true}
+  rows+='<div class="card flex'+(isOver?' over':'')+'"><button class="chk'+(t.done?' on':'')+'" onclick="tg('+t.id+')">'+(t.done?'\u2713':'')+'</button><span style="flex:1" class="'+(t.done?'done':'')+'">'+esc(t.n)+(t.borrowed?'<span class="tag"> ยืมเวลานอน</span>':'')+'<small>'+fmt(t.m)+'</small></span></div>';
+ });
+ if(!lined)rows+='<div class="line"></div>';
+ if(S.tmr.length)rows+='<div class="t" style="margin-top:6px">ฝากไว้พรุ่งนี้ '+S.tmr.length+' งาน</div>';
+ h+='<div class="list">'+rows+'</div>';
+ h+='<button class="btn o" onclick="openAdd()">+ เพิ่มงาน</button><button class="btn" onclick="go(\'close\')">ปิดร้านวันนี้</button>';
+ return h+nav();
+}
+function closeTab(){
+ var d=S.tasks.filter(function(t){return t.done}).length,b=S.tasks.filter(function(t){return t.borrowed}),ok=!b.length;
+ if(S.closed){
+  return '<div class="t ctr">ปิดร้านแล้ว</div><div class="moon"></div><div class="big ctr">'+(S.ok?'ถึงเวลาของอาจารย์':'วันนี้ปิดร้านแล้ว')+'</div><div class="card ctr"><span style="color:var(--acc);font-size:20px;font-weight:200">'+(S.ok?'ชินจัง/อนิเมะ 2:00:00':'พักได้เลย แต่ streak หลุด')+'</span><small>'+(S.ok?'streak '+S.streak+' วัน · หนี้นอนลดลง':'พรุ่งนี้เริ่มใหม่ได้')+'</small></div><button class="btn o" style="margin-top:auto" onclick="init();draw()">เริ่มเดโมใหม่</button>';
+ }
+ var h='<div class="t">'+hh(S.close)+' · ถึงเวลาปิดร้าน</div><div class="big">เสร็จ '+d+' จาก '+S.tasks.length+' งานวันนี้</div>';
+ h+='<div class="card"><small>ฝากไว้พรุ่งนี้</small>'+(S.tmr.length?S.tmr.map(function(t){return esc(t.n)}).join(', '):'ไม่มี')+'</div>';
+ h+='<div class="moon"></div>';
+ h+=ok?'<div class="card ctr">ปลดล็อกเวลาของอาจารย์<br><span style="color:var(--acc);font-size:16px">ชินจัง/อนิเมะ 2 ชม.</span></div><button class="btn" onclick="doClose()">ปิดร้านและเปิดชินจัง</button>':'<div class="card ctr" style="border:1px solid var(--red);color:var(--red)">วันนี้ยืมเวลานอน '+b.length+' งาน<br><small style="color:var(--red)">ปิดร้านได้ แต่ streak จะหลุด</small></div><button class="btn r" onclick="doClose()">ปิดร้านอยู่ดี</button>';
+ return h+'<button class="btn o" onclick="go(\'today\')">กลับไปจัดการงาน</button>';
+}
+function debt(){
+ var dots=S.week.slice(-7).map(function(c){return '<i class="'+c+'"></i>'}).join('');
+ var h='<div class="t">สัปดาห์นี้</div><div class="big">หนี้นอนสะสม<br><span style="color:'+(S.debt>0?'var(--red)':'var(--grn)')+'">'+(Math.round(S.debt*10)/10)+' ชม.</span></div><div class="dots">'+dots+'</div><div class="t">เขียว = ปิดร้านตรงเวลา · แดง = ยืมเวลานอน</div>';
+ h+='<div class="card"><small>ปิดร้านตรงเวลาต่อเนื่อง</small>🔥 '+S.streak+' วัน</div>';
+ h+='<div class="card" style="border:1px solid var(--acc)"><small style="color:var(--acc)">แผนใช้หนี้</small>ปิดร้านตรงเวลาทุกวัน หนี้ลดวันละ 0.5 ชม.</div>';
+ return h+nav();
+}
+function sheet(){
+ if(S.sheet=='add'){return '<div class="sheet"><div class="t">เพิ่มงาน</div><input id="nm" placeholder="ชื่องาน เช่น ทำเอกสารประเมิน"><div class="chips">'+[30,60,120,180].map(function(m){return '<button class="'+(S.dur==m?'on':'')+'" onclick="dur('+m+')">'+fmt(m)+'</button>'}).join('')+'</div><button class="btn" onclick="add()">เพิ่มงาน</button><button class="btn o" onclick="S.sheet=null;draw()">ยกเลิก</button></div>'}
+ if(S.sheet=='warn'){var id=S.pend,o=over();return '<div class="sheet"><div class="card" style="border:1px solid var(--red);color:var(--red)">งานนี้จะกินเวลานอน '+fmt(o)+'<small style="color:var(--red)">ถ้าทำต่อ จะนอนได้น้อยลงตามนั้น</small></div><button class="btn" onclick="split('+id+')">แบ่งงานเป็น 2 ส่วน (แนะนำ)</button><button class="btn o" onclick="defer('+id+')">ฝากไว้พรุ่งนี้ 09:00</button><button class="btn r" onclick="borrow('+id+')">ยืมเวลานอน (+'+(Math.round(o/6)/10)+' หนี้นอน)</button></div>'}
+ return '';
+}
+function draw(){
+ var b=S.tab=='today'?today():S.tab=='close'?closeTab():debt();
+ document.getElementById('app').innerHTML=pill()+b+sheet()+'<div class="gb"></div>';
+}
+document.querySelectorAll('.seg button').forEach(function(x){x.onclick=function(){document.body.dataset.p=x.dataset.p;document.querySelectorAll('.seg button').forEach(function(y){y.classList.toggle('on',y===x)})}});
+draw();
+</script>
+</body>
+</html>
